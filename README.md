@@ -1,21 +1,21 @@
-# @universal_aggregator/connect
+# @routermcp/connect-sdk
 
 Connect SDK for embedding the provider connection flow into any web app.
 
 ## Installation
 
-\`\`\`bash
-npm install @universal_aggregator/connect
+```bash
+npm install @routermcp/connect-sdk
 # or
-pnpm add @universal_aggregator/connect
-\`\`\`
+pnpm add @routermcp/connect-sdk
+```
 
 ## Usage
 
 ### Vanilla JS / TypeScript
 
-\`\`\`ts
-import { AggregatorConnect } from '@universal_aggregator/connect';
+```ts
+import { AggregatorConnect } from '@routermcp/connect-sdk';
 
 const instance = AggregatorConnect.open({
   token: 'your-session-token',
@@ -23,15 +23,15 @@ const instance = AggregatorConnect.open({
   onError: (err) => console.error('Error:', err),
   onClose: () => console.log('Modal closed'),
 });
-\`\`\`
+```
 
 ### React
 
-\`\`\`tsx
-import { ConnectButton } from '@universal_aggregator/connect/react';
+```tsx
+import { ConnectButton } from '@routermcp/connect-sdk/react';
 
 <ConnectButton token="your-session-token" onSuccess={handleSuccess} />
-\`\`\`
+```
 
 ## License
 
