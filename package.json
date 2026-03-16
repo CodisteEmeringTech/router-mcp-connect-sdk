@@ -1,6 +1,6 @@
 {
   "name": "@routemcp/connect-sdk",
-  "version": "2.0.0",
+  "version": "1.0.0",
   "description": "Connect SDK — embed the provider connection flow in any web app",
   "license": "MIT",
   "homepage": "https://github.com/CodisteEmeringTech/router-mcp-connect-sdk#readme",
