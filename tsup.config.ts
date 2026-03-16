@@ -12,7 +12,7 @@ export default defineConfig([
   {
     entry: { index: 'src/index.ts' },
     format: ['esm', 'cjs', 'iife'],
-    globalName: 'AggregatorConnect',
+    globalName: 'RouteMCPConnect',
     dts: true,
     clean: true,
     minify: !process.env.DEV,

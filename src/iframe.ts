@@ -6,7 +6,7 @@ export function createIframe(url: string, container: HTMLElement): HTMLIFrameEle
   const iframe = document.createElement('iframe');
 
   iframe.src = url;
-  iframe.id = 'aggregator-connect-iframe';
+  iframe.id = 'routemcp-connect-iframe';
   iframe.title = 'Connect your account';
 
   // Security: minimal sandbox permissions

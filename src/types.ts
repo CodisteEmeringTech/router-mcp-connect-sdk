@@ -1,6 +1,6 @@
 // ─── Public Types ───────────────────────────────────────────────
 
-/** Options passed to AggregatorConnect.open() */
+/** Options passed to RouteMCPConnect.open() */
 export interface ConnectOptions {
   /** Session token from POST /api/v1/connect/token or /connect/sessions */
   token: string;
@@ -54,7 +54,7 @@ export interface ConnectEventData {
   metadata?: Record<string, unknown>;
 }
 
-/** Handle returned by AggregatorConnect.open() */
+/** Handle returned by RouteMCPConnect.open() */
 export interface ConnectInstance {
   /** Programmatically close the Connect modal */
   close: () => void;

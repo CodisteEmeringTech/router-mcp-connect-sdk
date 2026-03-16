@@ -9,7 +9,7 @@ export function createOverlay(): {
   cleanup: () => void;
 } {
   const overlay = document.createElement('div');
-  overlay.id = 'aggregator-connect-overlay';
+  overlay.id = 'routemcp-connect-overlay';
   overlay.setAttribute('role', 'presentation');
 
   overlay.style.cssText = `
@@ -26,7 +26,7 @@ export function createOverlay(): {
   `;
 
   const container = document.createElement('div');
-  container.id = 'aggregator-connect-container';
+  container.id = 'routemcp-connect-container';
 
   const isMobile = window.innerWidth < 640;
 

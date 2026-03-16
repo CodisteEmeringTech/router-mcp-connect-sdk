@@ -22,10 +22,10 @@ export type {
 export { HOSTED_APP_URL, MESSAGE_TYPES, EVENTS, ERROR_CODES, PROTOCOL_VERSION } from './constants';
 
 /**
- * AggregatorConnect — main SDK entry point.
+ * RouteMCPConnect — main SDK entry point.
  *
  * Usage:
- *   const instance = AggregatorConnect.open({
+ *   const instance = RouteMCPConnect.open({
  *     token: 'session_token_here',
  *     onSuccess: (data) => console.log('Connected:', data.connectionId),
  *     onError: (err) => console.error('Error:', err.code),
@@ -35,7 +35,7 @@ export { HOSTED_APP_URL, MESSAGE_TYPES, EVENTS, ERROR_CODES, PROTOCOL_VERSION } 
  *   // Programmatic close:
  *   instance.close();
  */
-export class AggregatorConnect {
+export class RouteMCPConnect {
   /**
    * Open the Connect modal. Creates an overlay with an iframe
    * pointing to the hosted Connect app.

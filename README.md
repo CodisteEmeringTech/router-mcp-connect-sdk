@@ -15,9 +15,9 @@ pnpm add @routermcp/connect-sdk
 ### Vanilla JS / TypeScript
 
 ```ts
-import { AggregatorConnect } from '@routermcp/connect-sdk';
+import { RouteMCPConnect } from '@routermcp/connect-sdk';
 
-const instance = AggregatorConnect.open({
+const instance = RouteMCPConnect.open({
   token: 'your-session-token',
   onSuccess: (data) => console.log('Connected:', data),
   onError: (err) => console.error('Error:', err),

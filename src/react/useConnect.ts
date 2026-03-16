@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from 'react';
-import { AggregatorConnect } from '../index';
+import { RouteMCPConnect } from '../index';
 import type { ConnectInstance, ConnectErrorData } from '../types';
 import type { UseConnectOptions, UseConnectReturn } from './types';
 
@@ -31,7 +31,7 @@ export function useConnect(options: UseConnectOptions): UseConnectReturn {
     setReady(false);
     setError(null);
 
-    instanceRef.current = AggregatorConnect.open({
+    instanceRef.current = RouteMCPConnect.open({
       token: opts.token,
       onSuccess: opts.onSuccess,
       onError: (err) => {
