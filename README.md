@@ -1,13 +1,13 @@
-# @routermcp/connect-sdk
+# @routemcp/connect-sdk
 
 Connect SDK for embedding the provider connection flow into any web app.
 
 ## Installation
 
 ```bash
-npm install @routermcp/connect-sdk
+npm install @routemcp/connect-sdk
 # or
-pnpm add @routermcp/connect-sdk
+pnpm add @routemcp/connect-sdk
 ```
 
 ## Usage
@@ -15,7 +15,7 @@ pnpm add @routermcp/connect-sdk
 ### Vanilla JS / TypeScript
 
 ```ts
-import { RouteMCPConnect } from '@routermcp/connect-sdk';
+import { RouteMCPConnect } from '@routemcp/connect-sdk';
 
 const instance = RouteMCPConnect.open({
   token: 'your-session-token',
@@ -28,7 +28,7 @@ const instance = RouteMCPConnect.open({
 ### React
 
 ```tsx
-import { ConnectButton } from '@routermcp/connect-sdk/react';
+import { ConnectButton } from '@routemcp/connect-sdk/react';
 
 <ConnectButton token="your-session-token" onSuccess={handleSuccess} />
 ```
