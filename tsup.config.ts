@@ -1,7 +1,7 @@
 import { defineConfig } from 'tsup';
 
 const CONNECT_APP_URL =
-  process.env.CONNECT_APP_URL || 'https://router-mcp-connect-page.vercel.app';
+  process.env.CONNECT_APP_URL || 'https://connect.routemcp.io';
 
 const sharedDefine = {
   '__CONNECT_APP_URL__': JSON.stringify(CONNECT_APP_URL),
