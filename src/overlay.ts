@@ -41,10 +41,9 @@ export function createOverlay(): {
     `;
   } else {
     container.style.cssText = `
-      width: 440px;
-      max-height: 680px;
-      height: 90vh;
-      border-radius: 12px;
+      width: min(1100px, 95vw);
+      height: min(824px, 90vh);
+      border-radius: 24px;
       overflow: hidden;
       background: white;
       box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
