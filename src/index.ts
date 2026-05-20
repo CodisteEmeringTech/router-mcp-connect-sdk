@@ -87,6 +87,9 @@ export class RouteMCPConnect {
         providerId: options.providerId,
         reconnect: options.reconnect,
         allowMultiple: options.allowMultiple,
+        ...(options.apiBaseUrl
+          ? { apiBaseUrl: options.apiBaseUrl.replace(/\/+$/, '') }
+          : {}),
       });
     });
 

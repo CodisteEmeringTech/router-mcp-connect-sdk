@@ -20,6 +20,12 @@ export interface ConnectOptions {
   reconnect?: boolean;
   /** Allow connecting multiple providers in one session */
   allowMultiple?: boolean;
+  /**
+   * Backend API origin (no trailing slash), e.g. https://api.example.com.
+   * When set, the hosted connect app uses this for all API calls instead of
+   * its build-time VITE_API_BASE_URL. Pass the same base you use to mint the token.
+   */
+  apiBaseUrl?: string;
 }
 
 /** Data returned on successful connection */
@@ -79,6 +85,7 @@ export interface ConnectInitPayload {
   providerId?: string;
   reconnect?: boolean;
   allowMultiple?: boolean;
+  apiBaseUrl?: string;
 }
 
 /** Messages sent from hosted app (iframe) → SDK parent */
