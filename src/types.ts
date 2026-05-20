@@ -20,6 +20,16 @@ export interface ConnectOptions {
   reconnect?: boolean;
   /** Allow connecting multiple providers in one session */
   allowMultiple?: boolean;
+  /**
+   * Backend API origin only (no path, no trailing slash), e.g. `https://api.example.com`.
+   * If you only have a URL that includes `/api/v1`, pass it — it is normalized automatically.
+   */
+  apiBaseUrl?: string;
+  /**
+   * Hosted connect app URL (iframe target), e.g. `http://localhost:3100` or `https://connect.routemcp.io`.
+   * When omitted, uses the SDK build-time default (`CONNECT_APP_URL` / `HOSTED_APP_URL`).
+   */
+  connectAppUrl?: string;
 }
 
 /** Data returned on successful connection */
@@ -79,6 +89,7 @@ export interface ConnectInitPayload {
   providerId?: string;
   reconnect?: boolean;
   allowMultiple?: boolean;
+  apiBaseUrl?: string;
 }
 
 /** Messages sent from hosted app (iframe) → SDK parent */
