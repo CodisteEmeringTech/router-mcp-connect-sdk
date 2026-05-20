@@ -1,9 +1,9 @@
 import type { ConnectOptions, ConnectInstance } from './types';
-import { HOSTED_APP_URL, MESSAGE_TYPES, EVENTS } from './constants';
+import { MESSAGE_TYPES, EVENTS } from './constants';
 import { createIframe } from './iframe';
 import { createOverlay } from './overlay';
 import { createMessageHandler, sendMessage } from './messaging';
-import { buildHostedAppUrl, normalizeConnectApiBaseUrl } from './utils';
+import { resolveConnectAppUrl, normalizeConnectApiBaseUrl } from './utils';
 
 export type {
   ConnectOptions,
@@ -57,7 +57,7 @@ export class RouteMCPConnect {
     const { overlay, container, cleanup: overlayCleanup } = createOverlay();
 
     // Create iframe inside container
-    const url = buildHostedAppUrl();
+    const url = resolveConnectAppUrl(options.connectAppUrl);
     const iframe = createIframe(url, container);
 
     // Set up cleanup function
@@ -116,11 +116,12 @@ export class RouteMCPConnect {
    * Call this early (e.g., on page load) so the iframe loads faster
    * when open() is called later.
    */
-  static preload(): void {
-    if (document.querySelector('link[href="' + HOSTED_APP_URL + '"]')) return;
+  static preload(connectAppUrl?: string): void {
+    const url = resolveConnectAppUrl(connectAppUrl);
+    if (document.querySelector('link[href="' + url + '"]')) return;
     const link = document.createElement('link');
     link.rel = 'prefetch';
-    link.href = HOSTED_APP_URL;
+    link.href = url;
     document.head.appendChild(link);
   }
 }

@@ -25,6 +25,11 @@ export interface ConnectOptions {
    * If you only have a URL that includes `/api/v1`, pass it — it is normalized automatically.
    */
   apiBaseUrl?: string;
+  /**
+   * Hosted connect app URL (iframe target), e.g. `http://localhost:3100` or `https://connect.routemcp.io`.
+   * When omitted, uses the SDK build-time default (`CONNECT_APP_URL` / `HOSTED_APP_URL`).
+   */
+  connectAppUrl?: string;
 }
 
 /** Data returned on successful connection */

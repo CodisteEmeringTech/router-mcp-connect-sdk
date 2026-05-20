@@ -34,6 +34,7 @@ export function useConnect(options: UseConnectOptions): UseConnectReturn {
     instanceRef.current = RouteMCPConnect.open({
       token: opts.token,
       apiBaseUrl: opts.apiBaseUrl,
+      connectAppUrl: opts.connectAppUrl,
       onSuccess: opts.onSuccess,
       onError: (err) => {
         setError(err);

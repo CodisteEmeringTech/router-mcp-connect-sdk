@@ -26,9 +26,25 @@ export function normalizeConnectApiBaseUrl(url: string): string {
 }
 
 /**
- * Build the full URL for the hosted Connect app.
- * The token is NOT passed via URL — it's sent via postMessage after iframe loads.
+ * Resolve the hosted connect app URL for the iframe.
+ * Uses `override` when provided; otherwise the SDK build-time `HOSTED_APP_URL`.
+ * Token is not passed in the URL — it is sent via postMessage after load.
  */
-export function buildHostedAppUrl(): string {
-  return HOSTED_APP_URL;
+export function resolveConnectAppUrl(override?: string): string {
+  const trimmed = override?.trim();
+  if (!trimmed) {
+    return HOSTED_APP_URL;
+  }
+  try {
+    const parsed = new URL(trimmed);
+    const path = parsed.pathname.replace(/\/+$/, '');
+    return path ? `${parsed.origin}${path}` : parsed.origin;
+  } catch {
+    return trimmed.replace(/\/+$/, '');
+  }
+}
+
+/** @deprecated Use resolveConnectAppUrl */
+export function buildHostedAppUrl(override?: string): string {
+  return resolveConnectAppUrl(override);
 }
