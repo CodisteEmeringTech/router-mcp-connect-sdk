@@ -3,7 +3,7 @@ import { HOSTED_APP_URL, MESSAGE_TYPES, EVENTS } from './constants';
 import { createIframe } from './iframe';
 import { createOverlay } from './overlay';
 import { createMessageHandler, sendMessage } from './messaging';
-import { buildHostedAppUrl } from './utils';
+import { buildHostedAppUrl, normalizeConnectApiBaseUrl } from './utils';
 
 export type {
   ConnectOptions,
@@ -19,7 +19,13 @@ export type {
   ConnectInitPayload,
 } from './types';
 
-export { HOSTED_APP_URL, MESSAGE_TYPES, EVENTS, ERROR_CODES, PROTOCOL_VERSION } from './constants';
+export {
+  HOSTED_APP_URL,
+  MESSAGE_TYPES,
+  EVENTS,
+  ERROR_CODES,
+  PROTOCOL_VERSION,
+} from './constants';
 
 /**
  * RouteMCPConnect — main SDK entry point.
@@ -82,15 +88,20 @@ export class RouteMCPConnect {
 
     // Send init message once iframe loads
     iframe.addEventListener('load', () => {
-      sendMessage(iframe, MESSAGE_TYPES.INIT, {
+      const trimmedBase = options.apiBaseUrl?.trim();
+      const initPayload: Record<string, unknown> = {
         token: options.token,
         providerId: options.providerId,
         reconnect: options.reconnect,
         allowMultiple: options.allowMultiple,
-        ...(options.apiBaseUrl
-          ? { apiBaseUrl: options.apiBaseUrl.replace(/\/+$/, '') }
-          : {}),
-      });
+      };
+      if (trimmedBase) {
+        initPayload.apiBaseUrl = normalizeConnectApiBaseUrl(trimmedBase);
+      }
+      // macrotask: iframe document's useLayoutEffect listeners should be attached first
+      window.setTimeout(() => {
+        sendMessage(iframe, MESSAGE_TYPES.INIT, initPayload);
+      }, 0);
     });
 
     return {

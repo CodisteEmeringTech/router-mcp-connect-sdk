@@ -11,6 +11,21 @@ export function validateOrigin(origin: string, iframeSrc?: string): boolean {
 }
 
 /**
+ * Connect app API client uses paths like `/api/v1/sdk-config` against an origin-only base.
+ * Any path in the input (e.g. `/api/v1`) is dropped — only `origin` is kept.
+ */
+export function normalizeConnectApiBaseUrl(url: string): string {
+  const trimmed = url.trim();
+  if (!trimmed) return '';
+
+  try {
+    return new URL(trimmed).origin;
+  } catch {
+    return trimmed.replace(/\/+$/, '');
+  }
+}
+
+/**
  * Build the full URL for the hosted Connect app.
  * The token is NOT passed via URL — it's sent via postMessage after iframe loads.
  */

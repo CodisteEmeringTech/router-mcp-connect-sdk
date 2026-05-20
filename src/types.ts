@@ -21,9 +21,8 @@ export interface ConnectOptions {
   /** Allow connecting multiple providers in one session */
   allowMultiple?: boolean;
   /**
-   * Backend API origin (no trailing slash), e.g. https://api.example.com.
-   * When set, the hosted connect app uses this for all API calls instead of
-   * its build-time VITE_API_BASE_URL. Pass the same base you use to mint the token.
+   * Backend API origin only (no path, no trailing slash), e.g. `https://api.example.com`.
+   * If you only have a URL that includes `/api/v1`, pass it — it is normalized automatically.
    */
   apiBaseUrl?: string;
 }
