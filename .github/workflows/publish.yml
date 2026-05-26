@@ -1,20 +1,52 @@
-name: Publish to npm
+name: Release SDK
+
+# Two triggers:
+#   1. `workflow_dispatch` — the everyday path. Pick patch / minor / major
+#      from the dropdown, optionally toggle `dry_run` to preview the new
+#      version without actually releasing. The job bumps `package.json`,
+#      creates an annotated `v<version>` tag, pushes both the commit and
+#      tag, publishes to npm, and creates a GitHub Release with
+#      auto-generated notes.
+#
+#   2. `push: tags: ['v*']` — fallback for manual tag pushes (e.g. you ran
+#      `npm version` locally and pushed the tag yourself). Runs the publish
+#      step only; the tag is already created so we don't try to bump or
+#      tag again.
 
 on:
+  workflow_dispatch:
+    inputs:
+      bump:
+        type: choice
+        description: "Version bump — patch (1.1.1 → 1.1.2), minor (1.1.1 → 1.2.0), major (1.1.1 → 2.0.0). Update this description when bumping a major version so future runs show the right current."
+        options:
+          - patch
+          - minor
+          - major
+        default: patch
+      dry_run:
+        type: boolean
+        description: "Dry run — compute the new version and print to summary, but do NOT commit, tag, push, or publish."
+        default: false
   push:
     tags:
-      - 'v*'   # Triggers on any tag like v1.0.0, v1.2.3, v2.0.0
+      - "v*" # v1.0.0, v1.2.3, v2.0.0, ...
+
+permissions:
+  contents: write # bump commit, tag push, release creation
+  id-token: write # npm provenance
 
 jobs:
-  publish:
+  release:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write   # Required for npm provenance
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # Full history + write token so we can create + push the bump
+          # commit and tag from inside the workflow.
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up pnpm
         uses: pnpm/action-setup@v4
@@ -24,19 +56,94 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '24'
-          registry-url: 'https://registry.npmjs.org'
-          cache: 'pnpm'
+          node-version: "24"
+          registry-url: "https://registry.npmjs.org"
+          cache: "pnpm"
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Preview new version (workflow_dispatch only)
+        if: github.event_name == 'workflow_dispatch'
+        id: preview
+        run: |
+          OLD=$(node -p "require('./package.json').version")
+          NEW=$(npm --no-git-tag-version version "${{ inputs.bump }}" --no-commit-hooks)
+          # `npm version` printed the new version (with leading "v") and
+          # ALSO wrote it into package.json. Revert package.json so we can
+          # re-run the bump in the next step with the real commit/tag
+          # creation. Stripping the leading "v" gives us a clean string.
+          NEW_CLEAN=${NEW#v}
+          git checkout -- package.json package-lock.json pnpm-lock.yaml 2>/dev/null || true
+          echo "old=$OLD" >> "$GITHUB_OUTPUT"
+          echo "new=$NEW_CLEAN" >> "$GITHUB_OUTPUT"
+          {
+            echo "## Release preview"
+            echo ""
+            echo "| | |"
+            echo "|---|---|"
+            echo "| Bump | \`${{ inputs.bump }}\` |"
+            echo "| Current version | \`$OLD\` |"
+            echo "| New version | \`$NEW_CLEAN\` |"
+            echo "| Dry run | \`${{ inputs.dry_run }}\` |"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Stop here on dry run
+        if: github.event_name == 'workflow_dispatch' && inputs.dry_run == true
+        run: |
+          echo "Dry run complete — no commit, tag, push, or publish was performed."
+          echo "Re-run the workflow with dry_run=false to release \`${{ steps.preview.outputs.new }}\`."
+
+      - name: Configure git author
+        if: github.event_name == 'workflow_dispatch' && inputs.dry_run == false
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Bump version, commit, tag, push
+        if: github.event_name == 'workflow_dispatch' && inputs.dry_run == false
+        id: bump
+        run: |
+          # `npm version <bump>` updates package.json, creates a commit
+          # ("v<new-version>"), and creates an annotated tag. We push both.
+          NEW=$(npm version "${{ inputs.bump }}" -m "chore: release v%s")
+          NEW_CLEAN=${NEW#v}
+          git push origin HEAD --follow-tags
+          echo "tag=$NEW" >> "$GITHUB_OUTPUT"
+          echo "version=$NEW_CLEAN" >> "$GITHUB_OUTPUT"
+
       - name: Build
+        if: |
+          github.event_name == 'push' ||
+          (github.event_name == 'workflow_dispatch' && inputs.dry_run == false)
         run: pnpm run build
         env:
           CONNECT_APP_URL: ${{ secrets.CONNECT_APP_URL }}
 
       - name: Publish to npm
+        if: |
+          github.event_name == 'push' ||
+          (github.event_name == 'workflow_dispatch' && inputs.dry_run == false)
         run: npm publish --access public --provenance
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create GitHub Release (workflow_dispatch path)
+        if: github.event_name == 'workflow_dispatch' && inputs.dry_run == false
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "${{ steps.bump.outputs.tag }}" \
+            --title "${{ steps.bump.outputs.tag }}" \
+            --generate-notes
+
+      - name: Create GitHub Release (manual tag-push path)
+        if: github.event_name == 'push'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # `github.ref_name` is the tag name when triggered by a tag push.
+          gh release create "${{ github.ref_name }}" \
+            --title "${{ github.ref_name }}" \
+            --generate-notes \
+            || echo "Release for ${{ github.ref_name }} already exists — skipping."
