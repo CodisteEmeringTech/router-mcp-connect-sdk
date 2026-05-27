@@ -67,14 +67,21 @@ jobs:
         if: github.event_name == 'workflow_dispatch'
         id: preview
         run: |
+          # Compute the new version WITHOUT touching any files. Earlier
+          # iterations used `npm version --no-git-tag-version` here and
+          # tried to revert package.json afterwards, but the revert was
+          # fragile (package-lock.json doesn't exist in a pnpm repo, so
+          # `git checkout -- <files>` bailed on the missing path before
+          # reverting package.json — leaving the tree dirty and breaking
+          # the real `npm version` step downstream).
           OLD=$(node -p "require('./package.json').version")
-          NEW=$(npm --no-git-tag-version version "${{ inputs.bump }}" --no-commit-hooks)
-          # `npm version` printed the new version (with leading "v") and
-          # ALSO wrote it into package.json. Revert package.json so we can
-          # re-run the bump in the next step with the real commit/tag
-          # creation. Stripping the leading "v" gives us a clean string.
-          NEW_CLEAN=${NEW#v}
-          git checkout -- package.json package-lock.json pnpm-lock.yaml 2>/dev/null || true
+          NEW_CLEAN=$(node -e "
+            const [maj, min, pat] = require('./package.json').version.split('.').map(Number);
+            const bump = '${{ inputs.bump }}';
+            if (bump === 'major') console.log(\`\${maj + 1}.0.0\`);
+            else if (bump === 'minor') console.log(\`\${maj}.\${min + 1}.0\`);
+            else console.log(\`\${maj}.\${min}.\${pat + 1}\`);
+          ")
           echo "old=$OLD" >> "$GITHUB_OUTPUT"
           echo "new=$NEW_CLEAN" >> "$GITHUB_OUTPUT"
           {
