@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from 'react';
-import { RouteMCPConnect } from '../index';
+import { EightOSConnect } from '../index';
 import type { ConnectInstance, ConnectErrorData } from '../types';
 import type { UseConnectOptions, UseConnectReturn } from './types';
 
@@ -31,7 +31,7 @@ export function useConnect(options: UseConnectOptions): UseConnectReturn {
     setReady(false);
     setError(null);
 
-    instanceRef.current = RouteMCPConnect.open({
+    instanceRef.current = EightOSConnect.open({
       token: opts.token,
       apiBaseUrl: opts.apiBaseUrl,
       connectAppUrl: opts.connectAppUrl,

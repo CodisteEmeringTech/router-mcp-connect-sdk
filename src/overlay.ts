@@ -9,7 +9,7 @@ export function createOverlay(): {
   cleanup: () => void;
 } {
   const overlay = document.createElement('div');
-  overlay.id = 'routemcp-connect-overlay';
+  overlay.id = 'eightos-connect-overlay';
   overlay.setAttribute('role', 'presentation');
 
   overlay.style.cssText = `
@@ -26,7 +26,7 @@ export function createOverlay(): {
   `;
 
   const container = document.createElement('div');
-  container.id = 'routemcp-connect-container';
+  container.id = 'eightos-connect-container';
 
   const isMobile = window.innerWidth < 640;
 

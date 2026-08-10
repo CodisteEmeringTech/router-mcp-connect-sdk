@@ -1,6 +1,6 @@
 // ─── Public Types ───────────────────────────────────────────────
 
-/** Options passed to RouteMCPConnect.open() */
+/** Options passed to EightOSConnect.open() */
 export interface ConnectOptions {
   /** Session token from POST /api/v1/connect/token or /connect/sessions */
   token: string;
@@ -26,7 +26,7 @@ export interface ConnectOptions {
    */
   apiBaseUrl?: string;
   /**
-   * Hosted connect app URL (iframe target), e.g. `http://localhost:3100` or `https://connect.routemcp.io`.
+   * Hosted connect app URL (iframe target), e.g. `http://localhost:3100` or `https://connect.eightos.xyz`.
    * When omitted, uses the SDK build-time default (`CONNECT_APP_URL` / `HOSTED_APP_URL`).
    */
   connectAppUrl?: string;
@@ -64,7 +64,7 @@ export interface ConnectEventData {
   metadata?: Record<string, unknown>;
 }
 
-/** Handle returned by RouteMCPConnect.open() */
+/** Handle returned by EightOSConnect.open() */
 export interface ConnectInstance {
   /** Programmatically close the Connect modal */
   close: () => void;

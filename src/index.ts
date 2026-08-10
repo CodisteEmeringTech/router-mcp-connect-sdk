@@ -28,10 +28,10 @@ export {
 } from './constants';
 
 /**
- * RouteMCPConnect — main SDK entry point.
+ * EightOSConnect — main SDK entry point.
  *
  * Usage:
- *   const instance = RouteMCPConnect.open({
+ *   const instance = EightOSConnect.open({
  *     token: 'session_token_here',
  *     onSuccess: (data) => console.log('Connected:', data.connectionId),
  *     onError: (err) => console.error('Error:', err.code),
@@ -41,7 +41,7 @@ export {
  *   // Programmatic close:
  *   instance.close();
  */
-export class RouteMCPConnect {
+export class EightOSConnect {
   /**
    * Open the Connect modal. Creates an overlay with an iframe
    * pointing to the hosted Connect app.

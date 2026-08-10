@@ -1,7 +1,7 @@
 import { defineConfig } from 'tsup';
 
 const CONNECT_APP_URL =
-  process.env.CONNECT_APP_URL || 'https://connect.routemcp.io';
+  process.env.CONNECT_APP_URL || 'https://connect.eightos.xyz';
 
 const sharedDefine = {
   '__CONNECT_APP_URL__': JSON.stringify(CONNECT_APP_URL),
@@ -12,7 +12,7 @@ export default defineConfig([
   {
     entry: { index: 'src/index.ts' },
     format: ['esm', 'cjs', 'iife'],
-    globalName: 'RouteMCPConnect',
+    globalName: 'EightOSConnect',
     dts: true,
     clean: true,
     minify: !process.env.DEV,

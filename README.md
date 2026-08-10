@@ -1,13 +1,13 @@
-# @routemcp/connect-sdk
+# @eightos/connect-sdk
 
 Connect SDK for embedding the provider connection flow into any web app.
 
 ## Installation
 
 ```bash
-npm install @routemcp/connect-sdk
+npm install @eightos/connect-sdk
 # or
-pnpm add @routemcp/connect-sdk
+pnpm add @eightos/connect-sdk
 ```
 
 ## Usage
@@ -15,9 +15,9 @@ pnpm add @routemcp/connect-sdk
 ### Vanilla JS / TypeScript
 
 ```ts
-import { RouteMCPConnect } from '@routemcp/connect-sdk';
+import { EightOSConnect } from '@eightos/connect-sdk';
 
-const instance = RouteMCPConnect.open({
+const instance = EightOSConnect.open({
   token: 'your-session-token',
   /** Backend origin (no trailing slash). Sent to the connect-page so API calls match your app. */
   apiBaseUrl: 'https://api.example.com',
@@ -32,7 +32,7 @@ const instance = RouteMCPConnect.open({
 ### React
 
 ```tsx
-import { ConnectButton } from '@routemcp/connect-sdk/react';
+import { ConnectButton } from '@eightos/connect-sdk/react';
 
 <ConnectButton
   token="your-session-token"

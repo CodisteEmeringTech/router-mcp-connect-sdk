@@ -6,7 +6,7 @@ All notable changes to this project will be documented here.
 
 ### Added
 - Initial public release
-- Core `RouteMCPConnect.open()` API
+- Core `EightOSConnect.open()` API
 - React `ConnectButton` component and `useConnect` hook
 - postMessage protocol v1.0
 - ESM, CJS, and IIFE build outputs
