@@ -6,10 +6,10 @@
   "homepage": "https://eightos.xyz",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/CodisteEmeringTech/router-mcp-connect-sdk.git"
+    "url": "git+https://github.com/CodisteEmergingTech/router-mcp-connect-sdk.git"
   },
   "bugs": {
-    "url": "https://github.com/CodisteEmeringTech/router-mcp-connect-sdk/issues"
+    "url": "https://github.com/CodisteEmergingTech/router-mcp-connect-sdk/issues"
   },
   "keywords": [
     "connect",
