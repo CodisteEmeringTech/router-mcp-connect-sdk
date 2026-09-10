@@ -1,6 +1,6 @@
 {
   "name": "@eightos/connect-sdk",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Connect SDK — embed the provider connection flow in any web app",
   "license": "MIT",
   "homepage": "https://eightos.xyz",
