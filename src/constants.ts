@@ -28,6 +28,9 @@ export const PROTOCOL_VERSION = '1.0' as const;
 export const ERROR_CODES = {
   TOKEN_EXPIRED: 'TOKEN_EXPIRED',
   TOKEN_INVALID: 'TOKEN_INVALID',
+  /** The connect token was already spent by an earlier session. Mint a new
+   *  one rather than retrying -- the widget treats this as session-fatal. */
+  TOKEN_ALREADY_USED: 'TOKEN_ALREADY_USED',
   CREDENTIALS_INVALID: 'CREDENTIALS_INVALID',
   OAUTH_DENIED: 'OAUTH_DENIED',
   OAUTH_ERROR: 'OAUTH_ERROR',
